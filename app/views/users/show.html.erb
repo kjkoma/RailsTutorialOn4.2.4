@@ -1,0 +1,19 @@
+<% provide(:title, "#{@user.name} Profile") %>
+
+<div class="row">
+  <aside class="col-md-4">
+    <section>
+      <h1>
+        <%= gravatar_for @user, size: 120 %>
+        <%= @user.name %>
+      </h1>
+    </section>
+  </aside>
+</div>
+
+<hr>
+
+<div>
+  <p>名前: <%= @user.name %></p>
+  <p>E-Mail: <%= @user.email %></p>
+</div>
