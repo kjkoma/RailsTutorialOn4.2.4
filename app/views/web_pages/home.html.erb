@@ -2,7 +2,9 @@
 
 <div class="center jumbotron">
   <h1>Welcom, Report Share Site!!</h1>
-  <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
+  <% if !signed_in? %>
+    <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
+  <% end %>
   <hr>
 
   <h3>Sample Static App</h3>

@@ -1,5 +1,32 @@
 
-body { padding-top: 60px }
+body {
+  padding-top: 60px;
+  background: url("/assets/bg-image.jpg") no-repeat;
+  background-size: 100% auto;
+  background-attachment: fixed;
+}
+
+h1,h2,h3,h4,h5,p,label {
+  color: white;
+}
+
+.jumbotron {
+  h1,h2,h3,h4,h5,p {
+    color: #333333;
+  }
+}
+.navbar-inverse {
+  filter: alpha(opacity=75);
+  -moz-opacity: 0.75;
+  -khtml-opacity: 0.75;
+  opacity: 0.75;
+}
+.jumbotron {
+  filter: alpha(opacity=85);
+  -moz-opacity: 0.85;
+  -khtml-opacity: 0.85;
+  opacity: 0.85;
+}
 
 /* mixins, variables, etc. */
 
@@ -35,11 +62,14 @@ footer {
   margin-top: 45px;
   padding-top: 5px;
   border-top: 1px solid $grayMediumLight;
-  color: $gray-light;
+  /* color: $gray-light; */
+  color: white;
   a {
-    color: $gray;
+    /* color: $gray; */
+    color: white;
     &:hover {
-      color: $gray-darker;
+      /* color: $gray-darker; */
+      color: yellow;
     }
   }
   small {
@@ -69,6 +99,9 @@ footer {
   @extend .has-error;
 }
 
+.bg-notice {
+  @extend .bg-warning;
+}
 .bg-error {
   @extend .bg-danger;
 }

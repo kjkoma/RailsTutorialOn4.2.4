@@ -4,5 +4,5 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   # Include helper useage for controller
-  include SessionHelper
+  include SessionsHelper
 end

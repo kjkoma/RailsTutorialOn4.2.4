@@ -4,3 +4,7 @@ ja:
       session:
         email: "メールアドレス"
         password: "パスワード"
+
+  will_paginate:
+     previous_label: "&laquo 前へ"
+     next_label: "次へ &raquo"

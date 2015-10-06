@@ -1,12 +1,37 @@
-  <header class="navbar navbar-fixed-top navbar-inverse">
+  <header class="navbar navbar-fixed-top navbar-inverse" role="navigation"> <!-- 本来はnav要素、標準のhtml要素を利用する場合にrole属性が必要 -->
     <div class="container">
-      <div id="navbar" class="navbar-collapse collapse">
-          <%= link_to "RepoShare", root_path, id: "logo" %>
-        <ul class="nav navbar-nav navbar-right">
-            <li><%= link_to "Home", root_path %></li>
-            <li><%= link_to "Help", help_path %></li>
-            <li><%= link_to "Sign in", signin_path %></li>
+      <!-- mobile用レイアウト -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#global-nav-menu" aria-expanded="false">
+          <span class="sr-only">サイトメニュー</span> <!-- sr-onlyは音声ナビ用 -->
+          <span class="icon-bar"></span> <!-- ボタンアイコンの線表示（合計３本）-->
+          <span class="icon-bar"></span>
+          <sapn class="icon-bar"></span>
+        </button>
+        <%= link_to "RubyTuto", root_path, id: "logo" %> <!-- サイトロゴ -->
+      </div>
+
+      <!-- PC等のブラウザ表示用レイアウト、および、ナビゲーションのコンテンツ -->
+      <div class="collapse navbar-collapse" id="global-nav-menu">
+        <ul class="nav navbar-nav navbar-right"> <!-- 右詰めのメニュー配置 -->
+          <li><%= link_to "ホーム", root_path %></li>
+          <li><%= link_to "ヘルプ", help_path %></li>
+          <% if signed_in? #ログイン中 %>
+          <li><%= link_to "ユーザー一覧", users_path %></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">アカウント<span class="caret"></span></a><!-- class="caret"は「▼」の表示を意味します -->
+            <ul class="dropdown-menu">
+              <li><%= link_to "プロフィール", current_user %></li>
+              <li><%= link_to "設定", edit_user_path(current_user) %></li>
+              <li role="separator" class="divider"></li>
+              <li><%= link_to "ログアウト", signout_path, method: "delete" %></li>
+            </ul>
+          </li>
+          <% else #未ログイン %>
+          <li><%= link_to "ログイン", signin_path %></li>
+          <% end %>
         </ul>
       </div>
-    </div>
+
+    </div> <!-- container class -->
   </header>

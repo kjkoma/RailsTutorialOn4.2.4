@@ -15,9 +15,12 @@ RSpec.describe User, type: :model do
   it { should respond_to(:remember_token) }
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
+  it { should respond_to(:admin) }
 
-  it { should respond_to(:authenticate) }
+  it { should respond_to(:authenticate) }  # add 6.3.3 authentication method
+  it { should respond_to(:microposts) }    # add 10.6 relationship model
   it { should be_valid }
+  it { should_not be_admin }
 
   describe "Validate User" do
     before { @user.name = " " }
@@ -96,6 +99,47 @@ RSpec.describe User, type: :model do
         it { should_not eq user_for_invalid_password }
         specify { expect(user_for_invalid_password).to be_falsey }
       end
+    end
+  end
+
+  describe "Validate Remember Token" do
+    before { @user.save }
+    it { expect(@user.remember_token).not_to be_blank }
+  end
+
+  describe "with admin attribute set to 'true'" do
+    before do
+      @user.save!
+      @user.toggle!(:admin)
+    end
+
+    it { should be_admin }
+  end
+
+  describe "micropost associations" do
+    before { @user.save }
+    let!(:older_micropost) do
+      FactoryGirl.create(:micropost, user: @user, created_at: 1.day.ago)
+    end
+    let!(:newer_micropost) do
+      FactoryGirl.create(:micropost, user: @user, created_at: 1.hour.ago)
+    end
+
+    it "should have the right microposts in the right order" do
+      expect(@user.microposts.to_a).to eq [newer_micropost, older_micropost]
+    end
+
+    it "should destroy associated microposts" do
+      microposts = @user.microposts.to_a
+      @user.destroy
+      expect(microposts).not_to be_empty
+      microposts.each do |micropost|
+        expect(Micropost.where(id:micropost.id)).to be_empty
+      end
+      # if you want to use Find, you write to bellow.
+      # expect do
+      #   Micropost.find(micropost)
+      # end.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 

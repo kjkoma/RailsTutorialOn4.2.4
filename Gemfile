@@ -17,8 +17,10 @@ gem 'coffee-rails', '~> 4.1.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
+gem 'jquery-validation-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+#gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
@@ -41,6 +43,13 @@ gem 'rb-readline'
 gem 'sprockets-rails', '~> 2.3.3'
 gem 'bootstrap-sass', '~> 3.3.5'
 
+# ページ制御用のライブラリ
+gem 'will_paginate'
+gem 'bootstrap-will_paginate'
+
+# Rails3以降ではこちらのページ制御が有力
+#gem 'kaminari'
+
 # 暗号化用のライブラリ
 gem 'bcrypt'
 
@@ -49,6 +58,7 @@ group :development, :test do
   gem 'byebug'
   gem 'rspec-rails'
   gem 'capybara'
+  gem 'faker'
 end
 
 group :development do
@@ -61,4 +71,5 @@ end
 
 group :test do
   gem 'factory_girl_rails'
+  gem 'rspec-its'
 end
