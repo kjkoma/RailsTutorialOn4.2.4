@@ -17,8 +17,16 @@ RSpec.describe User, type: :model do
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:admin) }
 
-  it { should respond_to(:authenticate) }  # add 6.3.3 authentication method
-  it { should respond_to(:microposts) }    # add 10.6 relationship model
+  it { should respond_to(:authenticate) }          # add 6.3.3 authentication method
+  it { should respond_to(:microposts) }            # add 10.6 association model
+  it { should respond_to(:feed) }                  # add 10.35 association method
+  it { should respond_to(:relationships) }         # add 11.3 association model
+  it { should respond_to(:followed_users) }        # add 11.9 association model
+  it { should respond_to(:reverse_relationships) } # add 11.15 association model
+  it { should respond_to(:following?) }            # add 11.12 association method
+  it { should respond_to(:follow!) }               # add 11.12 association method
+  it { should respond_to(:unfollow!) }             # add 11.13 association method
+
   it { should be_valid }
   it { should_not be_admin }
 
@@ -140,6 +148,50 @@ RSpec.describe User, type: :model do
       # expect do
       #   Micropost.find(micropost)
       # end.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    describe "status" do
+      let(:unfollowed_post) do
+        FactoryGirl.create(:micropost, user: FactoryGirl.create(:user))
+      end
+      let(:followed_user) { FactoryGirl.create(:user) }
+
+      before do
+        @user.follow!(followed_user)
+        3.times { followed_user.microposts.create!(content: 'Lorem ipsum') }
+      end
+
+      specify { expect(@user.feed).to include(newer_micropost) }
+      specify { expect(@user.feed).to include(older_micropost) }
+      specify { expect(@user.feed).to_not include(unfollowed_post) }
+      specify do
+        followed_user.microposts.each do |micropost|
+            expect(@user.feed).to include(micropost)
+        end
+      end
+    end
+  end
+
+  describe "following" do
+    let(:other_user) { FactoryGirl.create(:user) }
+    before do
+      @user.save
+      @user.follow!(other_user)
+    end
+
+    it { should be_following(other_user) }
+    specify { expect(@user.followed_users).to include(other_user) }
+
+    describe "followed user" do
+      subject { other_user }
+      specify { expect(other_user.followers).to include(@user) }
+    end
+
+    describe "and unfollowing" do
+      before { @user.unfollow!(other_user) }
+
+      it { should_not be_following(other_user) }
+      specify { expect(@user.followed_users).to_not include(other_user) }
     end
   end
 

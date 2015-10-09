@@ -5,4 +5,5 @@ class ApplicationController < ActionController::Base
 
   # Include helper useage for controller
   include SessionsHelper
+
 end

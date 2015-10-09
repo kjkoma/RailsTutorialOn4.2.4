@@ -6,7 +6,7 @@
 aside {
   section {
     padding: 10px 0px;
-    border-top: 1px solid $gray-lighter;
+    border-top: 1px solid $gray-light;
     &:first-child {
       border: 0;
       padding-top: 0;
@@ -34,9 +34,9 @@ aside {
     font-size: 1.4em;
     overflow: auto;
     padding: 10px 0;
-    border-top: 1px solid $gray-lighter;
+    border-top: 1px solid $gray-light;
     &:last-child {
-      border-bottom: 1px solid $gray-lighter;
+      border-bottom: 1px solid $gray-light;
     }
     a {
       color :white;
@@ -76,8 +76,18 @@ input {
     color: white;
   }
 }
+
+.microposts-home {
+  @extend .microposts;
+  border-left: 1px solid #AAAAAA;
+  li {
+    color: #333333;
+  }
+}
+
 .content {
   display: block;
+  word-wrap: break-word;
 }
 .timestamp {
   color: $gray-light;

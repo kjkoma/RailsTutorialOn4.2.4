@@ -3,7 +3,8 @@ class UsersController < ApplicationController
   #
   # action method
   #
-  before_action :signed_in_user, only: [:index, :edit, :update, :destroy]
+  before_action :signed_in_user, 
+                only: [:index, :edit, :update, :destroy, :following, :followers]
   before_action :correct_user, only: [:edit, :update]
   before_action :admin_user, only: :destroy
   before_action :authenticated_user, only: [:new, :create]
@@ -17,7 +18,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @microposts = @user.microposts.paginate(page: params[:page], per_page:4)
+    @microposts = @user.microposts.paginate(page: params[:page], per_page: 4)
   end
 
   def new
@@ -58,6 +59,20 @@ class UsersController < ApplicationController
     redirect_to users_path
   end
 
+  def following
+    @title = "Following"
+    @user = User.find(params[:id])
+    @users = @user.followed_users.paginate(page: params[:page], per_page: 10)
+    render 'show_follow'
+  end
+
+  def followers
+    @title = "Followers"
+    @user = User.find(params[:id])
+    @users = @user.followers.paginate(page: params[:page], per_page: 10)
+    render 'show_follow'
+  end
+
   #
   # private method
   #
@@ -65,12 +80,6 @@ class UsersController < ApplicationController
 
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
-    end
-
-    # before action
-    def signed_in_user
-      store_location
-      redirect_to signin_path, notice: 'ログインしてください' unless signed_in?
     end
 
     def correct_user

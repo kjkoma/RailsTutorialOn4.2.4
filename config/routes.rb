@@ -32,6 +32,7 @@ Rails.application.routes.draw do
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
   resources :microposts, only: [:create, :destroy]
+  resources :relationships, only: [:create, :destroy]
 
   # Example resource route with options:
   #   resources :products do
@@ -44,6 +45,11 @@ Rails.application.routes.draw do
   #       get 'sold'
   #     end
   #   end
+  resources :users do
+    member do
+      get :following, :followers
+    end
+  end
 
   # Example resource route with sub-resources:
   #   resources :products do

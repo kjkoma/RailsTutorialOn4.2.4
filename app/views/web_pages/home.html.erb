@@ -1,14 +1,29 @@
 <% provide(:title, 'Home') %>
 
 <div class="center jumbotron">
-  <h1>Welcom, Report Share Site!!</h1>
-  <% if !signed_in? %>
+  <!-- 投稿 -->
+  <% if signed_in? %>
+    <div class="row">
+      <aside class="col-md-6">
+        <section>
+          <%= render 'shared/user_info' %>
+        </section>
+        <section>
+          <%= render 'shared/stats' %>
+        </section>
+        <section class="posted">
+          <%= render 'shared/micropost_form' %>
+        </section>
+      </aside>
+      <div class="col-md-6">
+        <h3>Micropost Feed</h3>
+        <%= render 'shared/feed' %>
+      </div>
+    </div>
+  <% else %>
+    <h1>Welcom, Report Share Site!!</h1>
     <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
-  <% end %>
-  <hr>
-
-  <h3>Sample Static App</h3>
-  <p>Find me in app/views/web_pages/home.html.erb</p>
+   <% end %>
 
   <hr>
 

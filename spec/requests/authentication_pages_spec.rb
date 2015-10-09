@@ -25,7 +25,8 @@ RSpec.describe "AuthenticationPages", type: :request do
         click_button "Sign in"
       end
 
-      it { should have_title(user.name) }
+      # it { should have_title(user.name) }
+      it { should have_title("| Home") }
       it { should have_link('プロフィール', href: user_path(user)) }
       it { should have_link('設定', href: edit_user_path(user)) }
       it { should have_link('ユーザー一覧', href: users_path) } 
@@ -60,6 +61,16 @@ RSpec.describe "AuthenticationPages", type: :request do
           before { patch user_path(user) }
           specify { expect(response).to redirect_to(signin_path) }
         end
+
+        describe "visiting the following page" do
+          before { visit following_user_path(user) }
+          it { should have_title('Sign in') }
+        end
+
+        describe "visiting the follower page" do
+          before { visit followers_user_path(user) }
+          it { should have_title('Sign in') }
+        end
       end
 
       describe "when attempting to visit a protected page" do
@@ -74,6 +85,30 @@ RSpec.describe "AuthenticationPages", type: :request do
           it "should render the desired protected page" do
             expect(page).to have_title('Edit User')
           end
+        end
+      end
+
+      describe "in the Microposts controller" do
+        describe "submitting to the create action" do
+          before { post microposts_path }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+
+        describe "submitting to the destroy action" do
+          before { delete micropost_path(FactoryGirl.create(:micropost)) }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+      end
+
+      describe "in the Relationship controller" do
+        describe "submitting to the create action" do
+          before { post relationships_path }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+
+        describe "submitting to the destroy action" do
+          before { delete relationship_path(1) }
+          specify { expect(response).to redirect_to(signin_path) }
         end
       end
     end
